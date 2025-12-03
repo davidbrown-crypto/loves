@@ -1,0 +1,122 @@
+ <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Do you love me?</title>
+  <style>
+    body{
+      margin:0;
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#ffeef4;
+      font-family:Arial;
+      overflow:hidden;
+    }
+    .card{
+      background:white;
+      padding:30px;
+      border-radius:20px;
+      width:350px;
+      text-align:center;
+      box-shadow:0 4px 20px rgba(0,0,0,0.15);
+      position:relative;
+      z-index:1;
+    }
+    h1{margin:0 0 10px;}
+    p{margin:0 0 20px;color:#444;}
+    button{
+      padding:12px 25px;
+      border:0;
+      border-radius:10px;
+      font-size:18px;
+      cursor:pointer;
+      font-weight:bold;
+      margin:0 5px;
+    }
+    .yes{
+      background:#ff4f7b;
+      color:white;
+    }
+    .no{
+      background:#ddd;
+    }
+    .floating-img{
+      position:fixed;
+      pointer-events:none;
+      z-index:9999;
+      animation:floatUp 4s linear forwards;
+    }
+    @keyframes floatUp{
+      0%{transform:translateY(0) scale(1);opacity:1;}
+      100%{transform:translateY(-600px) scale(1.4);opacity:0;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="card" id="card">
+  <h1 id="q1">Do you love me? ❤️</h1>
+  <p id="q2">(Choose honestly 😉)</p>
+
+  <button class="no" id="noBtn">No</button>
+  <button class="yes" id="yesBtn">Yes</button>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const card = document.getElementById("card");
+
+// NO BUTTON RUNNING AWAY
+noBtn.addEventListener("mouseenter", () => {
+  const x = Math.random() * 200 - 100;
+  const y = Math.random() * 200 - 100;
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+});
+
+// YES BUTTON ACTION
+yesBtn.addEventListener("click", () => {
+  // remove text and buttons
+  document.getElementById("q1").remove();
+  document.getElementById("q2").remove();
+  noBtn.remove();
+  yesBtn.remove();
+
+  // show love message
+  const msg = document.createElement("h1");
+  msg.innerText = "I love you too ❤️";
+  card.appendChild(msg);
+
+  // start flower rain for few seconds
+  startFlowerRain(5000); // 5 seconds
+});
+
+function startFlowerRain(duration){
+  const imgs = [
+    "https://i.imgur.com/4Y3QKpJ.png",
+    "https://i.imgur.com/0hJtqR8.png",
+    "https://i.imgur.com/kOB5HFT.png"
+  ];
+
+  const interval = setInterval(()=>{
+    const img = document.createElement("img");
+    img.src = imgs[Math.floor(Math.random()*imgs.length)];
+    img.className = "floating-img";
+    img.style.left = Math.random() * window.innerWidth + "px";
+    img.style.bottom = "-80px";
+    img.style.width = (40 + Math.random()*50) + "px";
+    img.style.height = "auto";
+    img.style.animationDelay = "0s";
+    document.body.appendChild(img);
+    setTimeout(()=> img.remove(), 4500);
+  }, 150); // spawn flower every 150ms
+
+  setTimeout(()=> clearInterval(interval), duration); // stop after duration
+}
+</script>
+
+</body>
+</html>
